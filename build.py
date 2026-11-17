@@ -525,6 +525,7 @@ def contact_form(depth, heading=True):
     <form class="form" method="post" action="{FORM_ENDPOINT}">
       <input type="hidden" name="_subject" value="New message from prodigalman.com">
       <input type="hidden" name="_template" value="table">
+      <input type="hidden" name="_cc" value="arv1221@gmail.com">
       <input type="hidden" name="_captcha" value="false">
       <input type="hidden" name="_next" value="{BASE_URL}thanks/">
       <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none">
