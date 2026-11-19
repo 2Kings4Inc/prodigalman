@@ -26,6 +26,7 @@ AMAZON = "https://a.co/d/09KZT5xQ"
 # sends Tim an activation email he must click once. After activation FormSubmit also offers a
 # random alias string that can replace the address here so it is not visible in the HTML.
 FORM_ENDPOINT = "https://formsubmit.co/prodigalmanministries@gmail.com"
+AMAZON_RATING = "4.9"  # Amazon customer rating out of 5, per Arvin Nov 19 2026; update when it changes
 
 NAV = [
     ("", "Home"),
@@ -185,6 +186,7 @@ section{padding-block:clamp(56px,8vw,112px)}
 .hero .wrap{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(280px,.85fr);gap:clamp(2rem,5vw,5rem);align-items:center}
 .hero h1{margin:1rem 0 1.25rem}
 .hero h1 em{font-style:italic;font-weight:400;color:var(--copper-glow)}
+.hero h1.stacked{text-wrap:initial}
 .hero .lede{max-width:52ch}
 .hero .btn-row{margin-top:2rem}
 .hero-roles{margin-top:2.25rem;display:flex;flex-wrap:wrap;gap:.5rem .9rem;color:var(--on-ink-muted);font-size:.85rem;letter-spacing:.1em;text-transform:uppercase}
@@ -255,6 +257,17 @@ section{padding-block:clamp(56px,8vw,112px)}
 .tagline b{color:var(--copper);font-weight:500}
 .logo-round,.split img.logo-round{width:150px;height:150px;border-radius:50%;box-shadow:none;filter:drop-shadow(0 18px 24px rgba(0,0,0,.38))}
 
+/* rating */
+.rating{display:inline-flex;align-items:center;gap:.55rem;text-decoration:none;color:inherit;font-size:.95rem;margin-top:1rem}
+.rating-stars{display:inline-flex;gap:2px}
+.rating-stars svg{width:18px;height:18px;fill:var(--gold)}
+.rating b{font-family:var(--display);font-size:1.25rem;font-weight:500;color:var(--text)}
+.ink .rating b,.ink-2 .rating b{color:#fff}
+.rating span:last-child{color:var(--muted)}
+.ink .rating span:last-child,.ink-2 .rating span:last-child{color:var(--on-ink-muted)}
+.rating:hover span:last-child{text-decoration:underline;text-underline-offset:3px}
+.home-book .book-cover{max-width:360px}
+@media (max-width:860px){.home-book .split{grid-template-columns:1fr}.home-book .book-cover{justify-self:start;max-width:300px}}
 /* book */
 .book-cover{max-width:420px;justify-self:center;margin:0;position:relative;padding-bottom:36px}
 .book-cover img{position:relative;z-index:1;filter:drop-shadow(0 28px 30px rgba(0,0,0,.42)) drop-shadow(0 8px 10px rgba(0,0,0,.28)) drop-shadow(0 1px 2px rgba(0,0,0,.35))}
@@ -401,6 +414,12 @@ ICONS = {
 
 # ---------------------------------------------------------------- layout
 
+def stars(depth=0):
+    star = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6.1 6.7.8-4.9 4.6 1.3 6.6L12 17.3l-6 3.3 1.3-6.6L2.4 9.4l6.7-.8z"/></svg>'
+    return (f'<a class="rating" href="{AMAZON}" target="_blank" rel="noopener" aria-label="Rated {AMAZON_RATING} out of 5 stars on Amazon">'
+            f'<span class="rating-stars">{star * 5}</span><b>{AMAZON_RATING}</b><span>out of 5 stars on Amazon</span></a>')
+
+
 def header(active, depth):
     links = []
     for path, label in NAV:
@@ -420,7 +439,7 @@ def footer(depth):
   <div class="wrap">
     <div class="f-mission">
       <p class="f-mission-label">The mission</p>
-      <p class="f-mission-text">Fix the Lies. Fix the Man. Fix the World.</p>
+      <p class="f-mission-text">Fix the Lies.<br>Fix the Man.<br>Fix the World.</p>
     </div>
     <div class="top">
       <div>
@@ -584,7 +603,7 @@ def build_home():
   <div class="wrap">
     <div>
       <p class="eyebrow">Tim Couet &middot; Prodigal Man</p>
-      <h1>Fix the Lies. Fix the <em>Man</em>. Fix the World.</h1>
+      <h1 class="stacked">Fix the Lies.<br>Fix the <em>Man</em>.<br>Fix the World.</h1>
       <p class="lede">Calling the men of the Church home to the identity God assigned them, so they can walk in victory as husbands, fathers and leaders.</p>
       <div class="btn-row">
         <a class="btn btn-primary" href="{href('book/', d)}">{ICONS['amazon']} Get the book</a>
@@ -596,6 +615,22 @@ def build_home():
       <img src="{asset('img/tim-portrait.jpg', d)}" alt="Tim Couet" width="445" height="458">
       <figcaption><b>Tim Couet</b> &middot; Author of Identity Assignment</figcaption>
     </figure>
+  </div>
+</section>
+
+<section class="paper-2 home-book">
+  <div class="wrap split">
+    <figure class="book-cover"><img src="{asset('img/book-cover.png', d)}" alt="Identity Assignment by Tim Couet, book cover and stacked copies" width="864" height="1200"></figure>
+    <div>
+      <p class="eyebrow">The book</p>
+      <h2>Identity Assignment</h2>
+      {stars(d)}
+      <p class="lede" style="margin-top:1rem">Tim Couet's book on the foundation of manhood: the identity God assigned to men in the garden, and how to live from it today. Now available on Amazon.</p>
+      <div class="btn-row" style="margin-top:1.75rem">
+        <a class="btn btn-primary" href="{AMAZON}" target="_blank" rel="noopener">{ICONS['amazon']} Buy now on Amazon</a>
+        <a class="btn btn-ghost" href="{href('book/', d)}">About the book</a>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -612,7 +647,7 @@ def build_home():
     </div>
     <div style="display:grid;justify-items:center;gap:1.2rem;text-align:center">
       <img class="logo-round" src="{asset('img/logo.png', d)}" alt="The Prodigal Man" width="569" height="576">
-      <p class="tagline">Fix the Lies. <b>Fix the Man.</b> Fix the World.</p>
+      <p class="tagline">Fix the Lies.<br><b>Fix the Man.</b><br>Fix the World.</p>
     </div>
   </div>
 </section>
@@ -668,6 +703,7 @@ def build_book():
     <div>
       <p class="eyebrow">Now available</p>
       <h2>Identity Assignment</h2>
+      {stars(d)}
       <p class="lede" style="margin-top:1rem">By Tim Couet. Order your copy on Amazon.</p>
       <div class="btn-row" style="margin-top:1.75rem">
         <a class="btn btn-primary" href="{AMAZON}" target="_blank" rel="noopener">{ICONS['amazon']} Buy now on Amazon</a>
@@ -787,7 +823,7 @@ def build_about():
     </div>
     <div style="display:grid;justify-items:center;gap:1.2rem;text-align:center">
       <img class="logo-round" src="{asset('img/logo.png', d)}" alt="The Prodigal Man" width="569" height="576" style="width:220px;height:220px">
-      <p class="tagline">Fix the Lies. <b>Fix the Man.</b> Fix the World.</p>
+      <p class="tagline">Fix the Lies.<br><b>Fix the Man.</b><br>Fix the World.</p>
     </div>
   </div>
 </section>

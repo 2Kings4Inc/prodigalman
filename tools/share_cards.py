@@ -57,6 +57,8 @@ def draw_brand(d, im):
     d.text((152, 70), "Prodigal Man", font=F_DISPLAY(34), fill=WHITE)
 
 def wrap(text, fnt, max_w, d):
+    if "\n" in text:
+        return [ln for part in text.split("\n") for ln in wrap(part, fnt, max_w, d)]
     words = text.split(); lines = []; cur = ""
     for w in words:
         t = (cur + " " + w).strip()
@@ -112,7 +114,7 @@ def card(name, eyebrow, title, sub=None, photo="stage-wide.jpg", side=None, side
 
 posts = json.load(open(os.path.join(ROOT, "content", "posts.json"), encoding="utf-8"))
 
-card("home", "Tim Couet", "Fix the Lies. Fix the Man. Fix the World.", "Speaker, author and leadership coach calling the men of the Church home.", side="tim-portrait.jpg")
+card("home", "Tim Couet", "Fix the Lies.\nFix the Man.\nFix the World.", "Speaker, author and leadership coach calling the men of the Church home.", side="tim-portrait.jpg")
 card("book", "The book", "Identity Assignment", "By Tim Couet. Now available on Amazon.", photo="studio.jpg", side="book-cover.png", side_raw=True)
 card("podcast", "Podcasts", "Altar'd Manhood and The Mentoring Christian Men Worldwide Podcast", "On Spotify, Apple Podcasts and YouTube.", photo="panel.jpg", side="mentoring-christian-men.jpg")
 card("socials", "Socials", "Follow Prodigal Man", "Instagram, Facebook and YouTube.", photo="studio-blue.jpg", side="logo.png", side_round=True)
