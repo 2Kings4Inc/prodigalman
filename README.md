@@ -11,13 +11,14 @@ Built Nov 17, 2026. Not a 2 Kings 4 Inc brand; client work.
 - `tools/share_cards.py` renders the 21 Open Graph share cards (1200x630) into `site/assets/share/` from the fonts in `tools/fonts/`; needs Pillow. Rerun it when a title changes, then `build.py`.
 
 ## Deploy
-LIVE at https://prodigalman.vercel.app. The Vercel project `prodigalman` was transferred to Tim Couet's own Vercel account on Nov 17, 2026, so deploys need a token from Tim's account (saved as a network secret for api.vercel.com on the "Prodigal Man" cloud environment, or in a Mac-only `.vercel-token` file). CLI-only, not Git-linked. Replace the scope below with Tim's team slug:
+LIVE at https://prodigalman.com/. The Vercel project `prodigalman` lives in Tim Couet's own Vercel team and is Git-linked to this repo (public, so it works on the Hobby plan): every commit to `main` deploys to production automatically. `vercel.json` sets the output directory to `site`, so no build command runs on Vercel; rebuild locally and commit the result.
 
 ```bash
-python3 build.py   # canonical and share-image host default to https://prodigalman.com/ (live on Vercel since Nov 17, 2026)
-rm -rf /tmp/pm-deploy && mkdir /tmp/pm-deploy && cp -r site/. /tmp/pm-deploy/ && cp vercel.json /tmp/pm-deploy/
-cd /tmp/pm-deploy && vercel deploy --prod --yes --name prodigalman --scope arv1221-4360s-projects
+python3 build.py   # canonical and share-image host default to https://prodigalman.com/
+git add -A && git commit -m "..." && git push   # Vercel deploys main within about a minute
 ```
+
+If something else gets deployed over production (a CLI deploy, a test page), either push to `main` again or, in Tim's Vercel dashboard, open the project's Deployments tab and promote the last good Git deployment.
 
 ## Open items
 - Contact form posts to FormSubmit (`FORM_ENDPOINT` in `build.py`), which emails Tim and redirects to `/thanks/`. Tim must click the one-time activation email that arrives after the first submission; until then nothing is delivered. After activation, FormSubmit shows a random alias that can replace the address in `FORM_ENDPOINT` so it is not visible in the page source.
