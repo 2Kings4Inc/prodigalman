@@ -717,6 +717,77 @@ def build_book():
     page("book/", "Book", "Identity Assignment by Tim Couet is now available on Amazon.", body, hero_img="studio.jpg")
 
 
+def build_book_promo():
+    # TEST promo/landing page for the book. Not in the main navigation or the sitemap, and marked
+    # noindex, so it is only reachable by its direct address /book-promo/.
+    d = 1
+    identity_post = next((p for p in posts if p["slug"] == "identity-how-did-god-make-the-man"), None)
+    post_link = (f'<a class="btn btn-ghost" href="{href("blog/" + identity_post["slug"] + "/", d)}">Read: {esc(identity_post["title"])}</a>'
+                 if identity_post else f'<a class="btn btn-ghost" href="{href("blog/", d)}">Read the blog</a>')
+    body = f"""
+<section class="hero home-hero">
+  <div class="wrap">
+    <div>
+      <p class="eyebrow">The new book by Tim Couet</p>
+      <h1 class="stacked">Identity<br><em>Assignment</em></h1>
+      <p class="lede">Where manhood starts: the identity God assigned to men in the garden, and how to live from it today.</p>
+      <div class="ink" style="background:none">{stars(d)}</div>
+      <div class="btn-row" style="margin-top:1.75rem">
+        <a class="btn btn-primary" href="{AMAZON}" target="_blank" rel="noopener">{ICONS['amazon']} Buy now on Amazon</a>
+        <a class="btn btn-ghost" href="#message">{ICONS['play']} Watch the message</a>
+      </div>
+    </div>
+    <figure class="book-cover"><img src="{asset('img/book-cover.png', d)}" alt="Identity Assignment by Tim Couet, book cover and stacked copies" width="864" height="1200"></figure>
+  </div>
+</section>
+
+<section class="paper-2">
+  <div class="wrap split" style="align-items:start">
+    <div>
+      <p class="eyebrow">Why this book</p>
+      <h2>Fix the Lies. Fix the Man. Fix the World.</h2>
+    </div>
+    <div class="prose">
+      <p>Prodigal Man was born out of the deep need for the men of the Church to reclaim victory in their lives. It starts with fixing the identity God assigned to men in the Garden of Eden, and from that identity learning how to lead at home, in the church and in the community.</p>
+      <p>If a man doesn't know his assigned identity by God he will always struggle. Identity Assignment is Tim Couet's book on the foundation of manhood: the identity God assigned to men in the garden, and how to live from it today.</p>
+    </div>
+  </div>
+</section>
+
+<section id="message">
+  <div class="wrap">
+    <div class="talk">
+      {video("jjnwavlpyaY", "Identity Assignment", d)}
+      <div><p class="eyebrow">The Foundation of Manhood</p><h3>Identity Assignment</h3><p class="lede">Where manhood starts: the identity God assigned to men in the garden.</p><a class="link" href="https://youtu.be/jjnwavlpyaY" target="_blank" rel="noopener" style="margin-top:1rem">Open on YouTube {ICONS['arrow']}</a></div>
+    </div>
+  </div>
+</section>
+
+<section class="ink">
+  <div class="wrap split" style="align-items:center">
+    <img src="{asset('img/tim-portrait.jpg', d)}" alt="Tim Couet" width="445" height="458" style="border-radius:8px;box-shadow:0 30px 60px -20px rgba(0,0,0,.5);max-width:360px">
+    <div>
+      <p class="eyebrow">About the author</p>
+      <h2>Tim Couet</h2>
+      <p class="lede" style="margin-top:1rem">Jesus follower, husband, father, speaker, author and leadership coach, calling the men of the Church home to the identity God assigned them, so they can walk in victory as husbands, fathers and leaders.</p>
+      <div class="btn-row" style="margin-top:1.5rem">
+        <a class="link" href="{href('more/bio/', d)}">Meet Tim {ICONS['arrow']}</a>
+        <a class="link" href="{href('more/contact/', d)}">Book Tim to speak {ICONS['arrow']}</a>
+      </div>
+    </div>
+  </div>
+</section>
+""" + cta_band(d, "Now available", "Get your copy of Identity Assignment", "Buy now on Amazon", AMAZON, None).replace(f'href="{AMAZON}"', f'href="{AMAZON}" target="_blank" rel="noopener"') + f"""
+<section>
+  <div class="wrap"><div class="btn-row">{post_link}<a class="btn btn-ghost" href="{href('book/', d)}">About the book</a></div></div>
+</section>
+"""
+    page("book-promo/", "Identity Assignment", "Identity Assignment by Tim Couet: the identity God assigned to men in the garden, and how to live from it today. Now available on Amazon.", body, active="book/", hero_img="studio.jpg", og_image="share/book.jpg")
+    t = os.path.join(SITE, "book-promo", "index.html")
+    html_t = open(t, encoding="utf-8").read().replace('<meta name="viewport"', '<meta name="robots" content="noindex">\n<meta name="viewport"', 1)
+    open(t, "w", encoding="utf-8").write(html_t)
+
+
 def build_podcast():
     d = 1
     body = page_hero("Podcasts", "Listen in", "Altar'd Manhood and The Mentoring Christian Men Worldwide Podcast, on Spotify, Apple Podcasts and YouTube.", d) + f"""
@@ -983,6 +1054,7 @@ def main():
     build_extras()
     build_home()
     build_book()
+    build_book_promo()
     build_podcast()
     build_socials()
     build_speaking()
