@@ -31,6 +31,7 @@ AMAZON_RATING = "4.9"  # Amazon customer rating out of 5, per Arvin Nov 19 2026;
 NAV = [
     ("", "Home"),
     ("book/", "Book"),
+    ("book-promo/", "Get the Book"),
     ("podcast/", "Podcast"),
     ("socials/", "Socials"),
     ("blog/", "Blog"),
@@ -718,8 +719,7 @@ def build_book():
 
 
 def build_book_promo():
-    # TEST promo/landing page for the book. Not in the main navigation or the sitemap, and marked
-    # noindex, so it is only reachable by its direct address /book-promo/.
+    # Promo/landing page for the book, linked from the main navigation as "Get the Book".
     d = 1
     identity_post = next((p for p in posts if p["slug"] == "identity-how-did-god-make-the-man"), None)
     post_link = (f'<a class="btn btn-ghost" href="{href("blog/" + identity_post["slug"] + "/", d)}">Read: {esc(identity_post["title"])}</a>'
@@ -782,10 +782,7 @@ def build_book_promo():
   <div class="wrap"><div class="btn-row">{post_link}<a class="btn btn-ghost" href="{href('book/', d)}">About the book</a></div></div>
 </section>
 """
-    page("book-promo/", "Identity Assignment", "Identity Assignment by Tim Couet: the identity God assigned to men in the garden, and how to live from it today. Now available on Amazon.", body, active="book/", hero_img="studio.jpg", og_image="share/book.jpg")
-    t = os.path.join(SITE, "book-promo", "index.html")
-    html_t = open(t, encoding="utf-8").read().replace('<meta name="viewport"', '<meta name="robots" content="noindex">\n<meta name="viewport"', 1)
-    open(t, "w", encoding="utf-8").write(html_t)
+    page("book-promo/", "Identity Assignment", "Identity Assignment by Tim Couet: the identity God assigned to men in the garden, and how to live from it today. Now available on Amazon.", body, hero_img="studio.jpg", og_image="share/book.jpg")
 
 
 def build_podcast():
@@ -1023,7 +1020,7 @@ def build_extras():
         f.write(CSS.strip() + "\n")
     with open(os.path.join(SITE, "assets", "site.js"), "w", encoding="utf-8") as f:
         f.write(JS.strip() + "\n")
-    paths = ["", "book/", "podcast/", "socials/", "blog/", "speaking/", "more/about/", "more/bio/", "more/consulting/", "more/contact/"] + ["blog/" + p["slug"] + "/" for p in posts]
+    paths = ["", "book/", "book-promo/", "podcast/", "socials/", "blog/", "speaking/", "more/about/", "more/bio/", "more/consulting/", "more/contact/"] + ["blog/" + p["slug"] + "/" for p in posts]
     sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
     sm += "".join(f"  <url><loc>{BASE_URL}{p}</loc></url>\n" for p in paths)
     sm += "</urlset>\n"
